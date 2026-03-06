@@ -1,4 +1,68 @@
-sudo apt update && upgrade
+echo -e "\e[1;96m  Starting cvaki deamon..../|_|\"
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+shopt -s checkwinsize
+#shopt -s globstar
+
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+#force_color_prompt=yes
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+unset color_prompt force_color_prompt
+
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+command_not_found_handle() {
+    /data/data/com.termux/files/usr/libexec/termux/command-not-found "$1"
+}
+export JAVA_HOME="/c/jdk-24.0.2"
+export PATH="$JAVA_HOME/bin:$PATH"
+sudo apt update -qq && sudo apt upgrade -y -qq
 clear
 echo ""
 echo -e "========================================================"
@@ -9,9 +73,6 @@ echo -e "\e[1;96m██║     \e[1;91m ( \e[1;92m (☣)\e[1;91m )    |    \  | 
 echo -e "\e[1;96m╚██████╗\e[1;91m  \/\|__  /|  / ____||  ______\ "
 echo -e "\e[1;96m ╚═════╝\e[1;91m                \/      \/      \/\e[1;92m powerd by              "
 echo -e "\e[1;96m                                                     CVAKI"
-command_not_found_handle() {
-             /data/data/com.termux/files/usr/libexec/termux/command-not-found "$1"
-}
 echo -e "\e[1;95m                     /|"
 echo -e "\e[1;95m                    | ⠇"
 echo -e "\e[1;94m      ⢀⣀⣀⣀⣀⡀⠰⠶⣶⣆⣀⣀\e[1;95m  ⡰⢶|\e[1;90m⣶⣶⣶⣶⣀⣀  \e[1;94m.⢀⣀⣀"
@@ -40,19 +101,16 @@ echo  "                \|"
 echo ""
 echo -e "\e[1;95m§§§§§§§§§§§§§§§§§§§§§§§§_{GODKILLER}_§§§§§§§§§§§§§§§§§§§§§§§"
 echo -e "\e[1;94m"
-echo -e "\e[1;93m MY--IPv6::: { $(ifconfig.me) }"
+echo -e "\e[1;93m MY--IPv6::: { $(curl -s ifconfig.me) }"
 echo -e "\e[1;92m"
 free -h
 echo "##############################################################"
-echo " $apt list --upgradable"
+echo " $(apt list --upgradable 2>/dev/null)"
 echo -e "\e[1;91m"
 df -h
-export JAVA_HOME="/c/jdk-24.0.2"
-export PATH="$JAVA_HOME/bin:$PATH"
+echo -e "\e[0m"
 
-PS1='\[\e[94m\]┌─×××××[\[\e[97m\]\T\[\e[94m\]]§§§§§§\e[1;94m[\e[1;92m{C0A†YL}✓\e[1;94m]\e[0;94m:::::::[\e[1;96m\#\e[1;92m-wings\e[1;94m]\n|\n\e[0;94m┟==[\[\e[94m\]\e[0;95m\W\[\e[94m\]]\e[1;93m-species\[\e[94m\]\e[1;91m\[\e[91m\]§§\e[1;91m[\e[1;92m{✓}\e[1;91m]\e[0;94m\n|\n└==[\[\e[93m\]≈≈≈≈≈\e[94m\]]™[✓]=►\e[1;91m'
-
-
-
-
-
+# ─────────────────────────────────────────────
+# CUSTOM PS1 PROMPT
+# ─────────────────────────────────────────────
+PS1='\[\e[94m\]┌─×××××[\[\e[97m\]\T\[\e[94m\]]§§§§§§\e[1;94m[\e[1;92m{C0A†YL}✓\e[1;94m]\e[0;94m:::::::[\e[1;96m\#\e[1;92m-wings\e[1;94m]\n|\n\e[0;94m┟==[\[\e[94m\]\e[0;95m\W\[\e[94m\]]\e[1;93m-species\[\e[94m\]\e[1;91m\[\e[91m\]§§\e[1;91m[\e[1;92m{✓}\e[1;91m]\e[0;94m\n|\n└==[\[\e[93m\]≈≈≈≈≈\e[94m\]]™[✓]=►\e[1;91m '
