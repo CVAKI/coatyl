@@ -35,14 +35,14 @@ echo  "                \|"
 echo ""
 echo -e "\e[1;95m§§§§§§§§§§§§§§§§§§§§§§§§_{𝙂಄𝘿⚚}_§§§§§§§§§§§§§§§§§§§§§§§"
 echo -e "\e[1;94m"
-echo -n "================(𝙂಄𝘿⚚)=========== user? [y/n] "
+echo -n "================(𝙂಄𝘿)=========== user? [y/n] "
 read key
 
 if [ "$key" = "Y" ]; then
   echo -n "Enter The Heaven password: "
   read pss
 
-  if [ "$pss" = "mycvagod" ]; then
+  if [ "$pss" = "1234@cvagod" ]; then
     echo "processing......."
 
     if test -f "interface.sh" && test -f "normal.sh"; then
@@ -74,3 +74,4 @@ if [ "$key" = "Y" ]; then
 else
   echo "You recognised { NOT } as my Master"
 fi
+
