@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo ""
 echo -e "========================================================"
 echo -e "\e[1;96m ██████╗\e[1;91m           _____   __          .____  "
@@ -38,9 +40,11 @@ echo -e "\e[1;94m"
 echo -n "================(𝙂಄𝘿)=========== user? [y/n] "
 read key
 
-if [ "$key" = "Y" ]; then
+# FIX 1: Accept both uppercase and lowercase y
+if [ "$key" = "y" ] || [ "$key" = "Y" ]; then
   echo -n "Enter The Heaven password: "
-  read pss
+  read -s pss  # FIX 2: Use -s flag to hide password input
+  echo ""       # Newline after hidden input
 
   if [ "$pss" = "1234@cvagod" ]; then
     echo "processing......."
@@ -50,22 +54,25 @@ if [ "$key" = "Y" ]; then
       echo -n "Do you want to install COTAYL [y/n]: "
       read ans
 
-      if [ "$ans" = "Y" ]; then
-         $( cat interface.sh > .bashrc)
+      # FIX 3: Accept both uppercase and lowercase y
+      if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
+        # FIX 4: Corrected broken command substitution — just use a direct redirect
+        cat interface.sh > ~/.bashrc
         echo "done"
         echo "type 'exit' and enter, then reopen"
       else
         echo "type 'exit' and enter, then reopen"
       fi
     else
-      echo -n "FILE MISSING ERROR 302 ): "
+      # FIX 5: Cleaned up error message formatting (was using -n inconsistently)
+      echo "FILE MISSING ERROR 302 ):"
 
       if ! test -f "interface.sh"; then
-        echo -n "INTERFACE MISSING, "
+        echo "  - INTERFACE.SH MISSING"
       fi
 
       if ! test -f "normal.sh"; then
-        echo "NORMAL MISSING."
+        echo "  - NORMAL.SH MISSING"
       fi
     fi
   else
@@ -74,4 +81,3 @@ if [ "$key" = "Y" ]; then
 else
   echo "You recognised { NOT } as my Master"
 fi
-
